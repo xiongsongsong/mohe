@@ -39,8 +39,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function (id) {
 
-        alert(id)
-
+        if (id !== 'deviceready') return
         var hostDomain = 'http://www.sjplus.cn'
 
         function shuffle(o) { //v1.0
@@ -49,6 +48,7 @@ var app = {
         }
 
         var data = []
+
         function getData(cb) {
             $.ajax({
                 url: 'http://www.sjplus.cn/design-works/latest/list',
