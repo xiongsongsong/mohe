@@ -43,12 +43,15 @@ var app = {
 
         var hostDomain = 'http://www.sjplus.cn'
 
+        alert(hostDomain)
+
         function shuffle(o) { //v1.0
             for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
             return o;
         }
 
         var data = []
+        alert(data)
 
         function getData(cb) {
             $.ajax({
@@ -59,11 +62,14 @@ var app = {
                 type: 'jsonp',
                 dataType: 'jsonp',
                 success: function (result) {
+                    alert('success'+ result)
                     data = shuffle(result.data)
                     if (cb) cb()
                 }
             })
         }
+
+        alert(3000000)
 
         setInterval(getData, 300000)
         var i = 0
@@ -81,6 +87,8 @@ var app = {
             new Image().src = hostDomain + '/read/' + nextObj.file_id.substring(0, 24) + '?m=full-size'
             setTimeout(switchDesignWorks, 5000)
         }
+
+        alert('start ge tData')
 
         getData(function () {
             switchDesignWorks()
