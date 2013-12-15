@@ -39,7 +39,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function (id) {
 
-        if (id !== 'deviceready') return
+        alert(id)
 
         var hostDomain = 'http://www.sjplus.cn'
 
@@ -49,14 +49,13 @@ var app = {
         }
 
         var data = []
-
         function getData(cb) {
             $.ajax({
                 url: 'http://www.sjplus.cn/design-works/latest/list',
                 data: {
                     count: 50
                 },
-                type: 'jsonp',
+                type: 'get',
                 dataType: 'jsonp',
                 success: function (result) {
                     data = shuffle(result.data)
