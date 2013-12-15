@@ -18,25 +18,75 @@
  */
 var app = {
     // Application Constructor
-    initialize: function() {
+    initialize: function () {
         this.bindEvents();
     },
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+    bindEvents: function () {
+        this.receivedEvent('deviceready')
+        //document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
+    onDeviceReady: function () {
         app.receivedEvent('deviceready');
     },
     // Update DOM on a Received Event
-    receivedEvent: function(id) {
+    receivedEvent: function (id) {
+
+        if (id !== 'deviceready') return
+
+        var hostDomain = 'http://www.sjplus.cn'
+
+        function shuffle(o) { //v1.0
+            for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+            return o;
+        }
+
+        var data = []
+
+        function getData(cb) {
+            $.ajax({
+                url: 'http://www.sjplus.cn/design-works/latest/list',
+                data: {
+                    count: 50
+                },
+                type: 'jsonp',
+                dataType: 'jsonp',
+                success: function (result) {
+                    data = shuffle(result.data)
+                    if (cb) cb()
+                }
+            })
+        }
+
+        setInterval(getData, 300000)
+        var i = 0
+        var content = $('#content')
+
+        function switchDesignWorks() {
+            $(content).css({
+                backgroundImage: 'url(' + hostDomain + '/read/' + data[i].file_id.substring(0, 24) + '?m=full-size)'
+            })
+            var nextObj = data[++i]
+            if (!nextObj) {
+                i = 0
+                nextObj = data[i]
+            }
+            new Image().src = hostDomain + '/read/' + nextObj.file_id.substring(0, 24) + '?m=full-size'
+            setTimeout(switchDesignWorks, 5000)
+        }
+
+        getData(function () {
+            switchDesignWorks()
+        })
+
+
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
@@ -44,9 +94,7 @@ var app = {
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
 
-        setTimeout(function(){
-            window.location.href='http://www.sjplus.cn/go/front-tv-tianmao'
-        },3000)
+        $.ajaxJSONP
 
         console.log('Received Event: ' + id);
     }
