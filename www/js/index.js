@@ -91,6 +91,7 @@ var app = {
         alert('start ge tData')
 
         getData(function () {
+            alert('start call callback')
             switchDesignWorks()
         })
 
