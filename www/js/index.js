@@ -41,16 +41,21 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
+        alert(KISSY)
+        var S=KISSY
         if(id==='deviceready'){
-
+            var content= S.get('#content')
         var hostDomain = 'http://www.sjplus.cn'
 
+            alert(content)
         function shuffle(o) { //v1.0
             for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
             return o;
         }
 
         KISSY.use('dom,event,io,anim', function (S, DOM, Event, IO, Anim) {
+            alert('kissy use ready')
+
             var data = []
 
             function getData(cb) {
