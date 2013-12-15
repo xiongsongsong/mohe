@@ -43,15 +43,12 @@ var app = {
 
         var hostDomain = 'http://www.sjplus.cn'
 
-        alert(hostDomain)
-
         function shuffle(o) { //v1.0
             for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
             return o;
         }
 
         var data = []
-        alert(data)
 
         function getData(cb) {
             $.ajax({
@@ -62,22 +59,35 @@ var app = {
                 type: 'jsonp',
                 dataType: 'jsonp',
                 success: function (result) {
-                    alert('success'+ result)
                     data = shuffle(result.data)
                     if (cb) cb()
                 }
             })
         }
 
-        alert(3000000)
-
         setInterval(getData, 300000)
         var i = 0
         var content = $('#content')
+        var user = $('#user')
+        var title = $('#title')
+        var avatar = $('#avatar')
 
         function switchDesignWorks() {
-            $(content).css({
-                backgroundImage: 'url(' + hostDomain + '/read/' + data[i].file_id.substring(0, 24) + '?m=full-size)'
+
+            var current = data[i]
+            content.css({
+                backgroundImage: 'url(' + hostDomain + '/read/' + current.file_id.substring(0, 24) + '?m=full-size)'
+            })
+
+            avatar.animate({marginLeft: -180, opacity: 0}, 500, function () {
+                avatar.animate({marginLeft: 0, opacity: 1}, 500)[0].src = 'http://www.sjplus.cn/avatar/' + current.owner_id + '_80x80'
+            })
+            user.animate({paddingLeft: 30, marginBottom: 50, opacity: 0}, 600, function () {
+                user.css({paddingLeft: 0, marginBottom: 0}).animate({ opacity: 1}, 200).html(current.owner_user)
+
+            })
+            title.animate({paddingLeft: 30, opacity: 0}, 600, function () {
+                title.css({paddingLeft: 0}).animate({opacity: 1}, 200).html(current.title)
             })
             var nextObj = data[++i]
             if (!nextObj) {
@@ -85,13 +95,12 @@ var app = {
                 nextObj = data[i]
             }
             new Image().src = hostDomain + '/read/' + nextObj.file_id.substring(0, 24) + '?m=full-size'
-            setTimeout(switchDesignWorks, 5000)
+            setTimeout(switchDesignWorks, 6000)
+
+
         }
 
-        alert('start ge tData')
-
         getData(function () {
-            alert('start call callback')
             switchDesignWorks()
         })
 
