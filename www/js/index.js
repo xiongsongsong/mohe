@@ -37,6 +37,7 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
+        if(id==='deviceready'){
 
         var hostDomain = 'http://www.sjplus.cn'
 
@@ -83,5 +84,6 @@ var app = {
             })
 
         })
+    }
     }
 };
