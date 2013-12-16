@@ -41,6 +41,7 @@ var app = {
 
         if (id !== 'deviceready') return
         var hostDomain = 'http://www.sjplus.cn'
+        var switchCl
 
         function shuffle(o) { //v1.0
             for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
@@ -49,17 +50,19 @@ var app = {
 
         var data = []
 
-        function getData(cb) {
+        function getData() {
+            clearTimeout(switchCl)
             $.ajax({
                 url: 'http://www.sjplus.cn/design-works/latest/list',
                 data: {
-                    count: 50
+                    count: 10
                 },
                 type: 'get',
                 dataType: 'jsonp',
                 success: function (result) {
+                    console.log(result)
                     data = shuffle(result.data)
-                    if (cb) cb()
+                    switchDesignWorks()
                 }
             })
         }
@@ -94,14 +97,10 @@ var app = {
                 nextObj = data[i]
             }
             new Image().src = hostDomain + '/read/' + nextObj.file_id.substring(0, 24) + '?m=full-size'
-            setTimeout(switchDesignWorks, 6000)
-
-
+            switchCl = setTimeout(switchDesignWorks, 7000)
         }
 
-        getData(function () {
-            switchDesignWorks()
-        })
+        getData()
 
     }
 };
